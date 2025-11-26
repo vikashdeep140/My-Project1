@@ -5,19 +5,22 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-# Install SSH key
-- task: InstallSSHKey@0
-  inputs:
-    knownHostsEntry: ''
-    sshPublicKey: '$(publicKey)'
-    sshKey: '$(privateKey)'
 
-# Deploy using SSH
+# Start message
+- script: echo "Starting Deployment"
+  displayName: "Start"
+
+# SSH to EC2 and pull latest code
 - task: SSH@0
   inputs:
-    sshEndpoint: 'UAT-Server-SSH'   # your Azure DevOps SSH service connection name
+    sshEndpoint: 'AWS-EC2-Server'   # service connection name
     runOptions: 'commands'
     commands: |
+      echo "Connected to EC2"
       cd /var/www/html
       git pull
-  displayName: 'Deploy to Server'
+  displayName: "Deploy to EC2 Server"
+
+# Finish message
+- script: echo "Deployment Completed Successfully"
+  displayName: "Finish"
