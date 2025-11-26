@@ -6,22 +6,21 @@ pool:
 
 steps:
 
-# 1. Print message
+# Start message
 - script: echo "Starting Deployment"
   displayName: "Start"
 
-# 2. Connect to your EC2 server using SSH Service Connection
-#    Make sure your service connection name is: UAT-Server-SSH
+# SSH to EC2 and pull latest code
 - task: SSH@0
   inputs:
-    sshEndpoint: 'UAT-Server-SSH'   # Your Azure DevOps SSH service connection name
+    sshEndpoint: 'AWS-EC2-Server'   # service connection name
     runOptions: 'commands'
     commands: |
-      echo "Connected to server"
+      echo "Connected to EC2"
       cd /var/www/html
       git pull
   displayName: "Deploy to EC2 Server"
 
-# 3. Finished
+# Finish message
 - script: echo "Deployment Completed Successfully"
   displayName: "Finish"
